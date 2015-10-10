@@ -1,4 +1,4 @@
-package cz.muni.fi.xosvald.pv256;
+package uco325253;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

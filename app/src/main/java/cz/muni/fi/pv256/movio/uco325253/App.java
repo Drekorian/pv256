@@ -1,8 +1,10 @@
-package cz.muni.fi.xosvald.pv256;
+package cz.muni.fi.pv256.movio.uco325253;
 
 import android.app.Application;
 import android.os.Build;
 import android.os.StrictMode;
+
+import cz.muni.fi.xosvald.pv256.BuildConfig;
 
 /**
  * Created by Marek on 21.09.2015.
