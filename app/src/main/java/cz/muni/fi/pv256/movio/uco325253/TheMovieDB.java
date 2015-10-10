@@ -2,7 +2,7 @@ package cz.muni.fi.pv256.movio.uco325253;
 
 /**
  * Static class that holds TheMovieDB API key.
- *
+ * <p/>
  * Created by xosvald on 29.09.2015.
  */
 public class TheMovieDB {
