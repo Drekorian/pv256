@@ -4,8 +4,6 @@ import android.app.Application;
 import android.os.Build;
 import android.os.StrictMode;
 
-import cz.muni.fi.xosvald.pv256.BuildConfig;
-
 /**
  * This class serves as a custom extension of Android Application class that enforces the Strict
  * mode.
