@@ -1,4 +1,4 @@
-package cz.muni.fi.xosvald.pv256;
+package cz.muni.fi.pv256.movio.uco325253;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
