@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">pv256</string>
+    <string name="film">Film</string>
+    <string name="opening">Opening this week</string>
+    <string name="theaters">In theaters now</string>
+
+    <string name="drawer_open">pv256 (open)</string>
+    <string name="drawer_close">pv256 (closed)</string>
 </resources>

@@ -16,4 +16,7 @@
     <color name="icons">#ffffff</color>
     <color name="divider">#b6B6b6</color>
 
+    <color name="movie_title_text_color">#ffffff</color>
+    <color name="movie_title_background_color">#99000000</color>
+
 </resources>
