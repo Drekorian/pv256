@@ -20,3 +20,15 @@ PV256 Android programming project
 - adds application icon
 - adds primary and secondary theme
 - updates MainActivity layout
+
+===============================================================================
+==   Week 04   ================================================================
+===============================================================================
+
+- adds Film model
+- adds film fake data
+- adds FilmAdapter
+- adds FilmAdapter empty view
+- adds film detail activity
+- adds navigation drawer
+- adds debug logs
