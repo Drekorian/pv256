@@ -6,4 +6,7 @@
 
     <string name="drawer_open">pv256 (open)</string>
     <string name="drawer_close">pv256 (closed)</string>
+
+    <string name="no_data">žádná data</string>
+    <string name="no_connection">žádné připojení</string>
 </resources>

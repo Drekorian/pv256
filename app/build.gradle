@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "cz.muni.fi.xosvald.pv256"
+        applicationId "cz.muni.fi.pv256.movio.uco325253"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
