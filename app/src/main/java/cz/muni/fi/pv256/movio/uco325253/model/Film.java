@@ -67,7 +67,7 @@ public final class Film {
 
     @Override
     public int hashCode() {
-        return 101 * mReleaseDate + 211 * mCoverPath + 307 * mTitle;
+        return 101 * ((int) mReleaseDate) + 211 * mCoverPath.hashCode() + 307 * mTitle.hashCode();
     }
 
 }
