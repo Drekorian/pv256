@@ -108,15 +108,18 @@ public class FilmAdapter extends ArrayAdapter<Film> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
+        FilmViewHolder filmViewHolder;
+
         if (null == view) {
             Log.i("", "inflate radku " + position);
             view = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
             ImageView imageView = (ImageView) view.findViewById(R.id.ivwCover);
             TextView textView = (TextView) view.findViewById(R.id.tvwName);
-            FilmViewHolder filmViewHolder = new FilmViewHolder(imageView, textView);
+            filmViewHolder = new FilmViewHolder(imageView, textView);
             view.setTag(filmViewHolder);
         } else {
             Log.i("", "recyklace radku " + position);
+            filmViewHolder = (FilmViewHolder) view.getTag();
         }
 
 //        if (2 >= position % 6) {
@@ -127,8 +130,6 @@ public class FilmAdapter extends ArrayAdapter<Film> {
 
         final Film film = getItem(position);
 
-        FilmViewHolder filmViewHolder = (FilmViewHolder) view.getTag();
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         BitmapUtils.calculateInSampleSize(options, filmViewHolder.imageView.getMeasuredWidth(), filmViewHolder.imageView.getMeasuredHeight());
         filmViewHolder.imageView.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), getImageDrawable(position), options));
@@ -136,6 +137,11 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         filmViewHolder.textView.setVisibility(View.INVISIBLE);
 
         return view;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return getItem(position).hashCode();
     }
 
     private int getImageDrawable(int position) {

@@ -53,4 +53,21 @@ public final class Film {
         return mTitle;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (null == o || !(o instanceof Film)) {
+            return false;
+        }
+
+        Film other = (Film) o;
+        return mReleaseDate == other.mReleaseDate  &&
+               mCoverPath.equals(other.mCoverPath) &&
+               mTitle.equals(other.mTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        return 101 * mReleaseDate + 211 * mCoverPath + 307 * mTitle;
+    }
+
 }
