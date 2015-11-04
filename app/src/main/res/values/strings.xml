@@ -9,4 +9,14 @@
 
     <string name="no_data">žádná data</string>
     <string name="no_connection">žádné připojení</string>
+
+    <string name="cast">Cast</string>
+    <string name="overview">Overview</string>
+
+    <string name="gyllenhaal">Jake Gyllenhaal</string>
+    <string name="clarke">Jason Clarke</string>
+    <string name="description">Inspired by the events surrounding a treacherous attempt to reach the summit of the world\'s highest mountain, \'Everest\' documents the awe-inspiring journey of two…</string>
+    <string name="director">Director</string>
+    <string name="year">Year</string>
+    <string name="poster">Poster</string>
 </resources>

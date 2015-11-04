@@ -1,18 +1,17 @@
 package cz.muni.fi.pv256.movio.uco325253;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleArrayAdapter;
+
 import java.util.List;
 
-import cz.muni.fi.pv256.movio.uco325253.model.BitmapUtils;
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
 
 /**
@@ -20,88 +19,43 @@ import cz.muni.fi.pv256.movio.uco325253.model.Film;
  * <p/>
  * Created by xosvald on 12.10.2015.
  */
-public class FilmAdapter extends ArrayAdapter<Film> {
+public class FilmAdapter extends StickyGridHeadersSimpleArrayAdapter<Film> {
 
-    private int mResource;
+    private Context mContext;
+    private int mHeaderResource;
+    private int mItemResource;
 
     /**
-     * Parametric constructor. Sets context and a resource to inflate.
+     * Parametric constructor. Sets Android context, list of items, header resource ID and item
+     * resource ID.
      *
-     * @param context  Android context
-     * @param resource resource to inflate
+     * @param context     Android context to be set
+     * @param items       a list of items to be set
+     * @param headerResId header resource ID to be set
+     * @param itemResId   item resource ID to be set
      */
-    @SuppressWarnings("unused")
-    public FilmAdapter(Context context, int resource) {
-        super(context, resource);
-        mResource = resource;
+    public FilmAdapter(Context context, List<Film> items, int headerResId, int itemResId) {
+        super(context, items, headerResId, itemResId);
+        mContext = context;
+        mHeaderResource = headerResId;
+        mItemResource = itemResId;
     }
 
     /**
-     * Parametric constructor. Sets context, resource to inflate and text view resource to populate.
+     * Parametric constructor. Sets Android context, array of items, header resource ID and item
+     * resource ID.
      *
-     * @param context            Android context
-     * @param resource           resource to inflate
-     * @param textViewResourceId text view resource to populate
+     * @param context     Android context to be set
+     * @param items       an array of items to be set
+     * @param headerResId header resource ID to be set
+     * @param itemResId   item resource ID to be set
      */
     @SuppressWarnings("unused")
-    public FilmAdapter(Context context, int resource, int textViewResourceId) {
-        super(context, resource, textViewResourceId);
-        mResource = resource;
-    }
-
-    /**
-     * Parametric constructor. Sets context, resource to inflate and data array.
-     *
-     * @param context  Android context
-     * @param resource resource to inflate
-     * @param objects  data array
-     */
-    @SuppressWarnings("unused")
-    public FilmAdapter(Context context, int resource, Film[] objects) {
-        super(context, resource, objects);
-        mResource = resource;
-    }
-
-    /**
-     * Parametric constructor. Sets context, resource to inflate, text view resource to populate
-     * and array data.
-     *
-     * @param context            Android context
-     * @param resource           resource to inflate
-     * @param textViewResourceId text view resource to populate
-     * @param objects            array data
-     */
-    @SuppressWarnings("unused")
-    public FilmAdapter(Context context, int resource, int textViewResourceId, Film[] objects) {
-        super(context, resource, textViewResourceId, objects);
-        mResource = resource;
-    }
-
-    /**
-     * Parametric constructor. Sets context, resource to inflate and data list.
-     *
-     * @param context  Android context
-     * @param resource resource to inflate
-     * @param objects  data list
-     */
-    public FilmAdapter(Context context, int resource, List<Film> objects) {
-        super(context, resource, objects);
-        mResource = resource;
-    }
-
-    /**
-     * Parametric constructor. Sets context, resource to inflate, text view resource to populate and
-     * list data.
-     *
-     * @param context            Android context
-     * @param resource           resource to inflate
-     * @param textViewResourceId text view resource to populate
-     * @param objects            list data
-     */
-    @SuppressWarnings("unused")
-    public FilmAdapter(Context context, int resource, int textViewResourceId, List<Film> objects) {
-        super(context, resource, textViewResourceId, objects);
-        mResource = resource;
+    public FilmAdapter(Context context, Film[] items, int headerResId, int itemResId) {
+        super(context, items, headerResId, itemResId);
+        mContext = context;
+        mHeaderResource = headerResId;
+        mItemResource = itemResId;
     }
 
     @Override
@@ -110,7 +64,7 @@ public class FilmAdapter extends ArrayAdapter<Film> {
 
         if (null == view) {
             Log.i("", "inflate radku " + position);
-            view = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
+            view = LayoutInflater.from(mContext).inflate(mItemResource, parent, false);
             ImageView imageView = (ImageView) view.findViewById(R.id.ivwCover);
             TextView textView = (TextView) view.findViewById(R.id.tvwName);
             FilmViewHolder filmViewHolder = new FilmViewHolder(imageView, textView);
@@ -129,12 +83,43 @@ public class FilmAdapter extends ArrayAdapter<Film> {
 
         FilmViewHolder filmViewHolder = (FilmViewHolder) view.getTag();
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        BitmapUtils.calculateInSampleSize(options, filmViewHolder.imageView.getMeasuredWidth(), filmViewHolder.imageView.getMeasuredHeight());
-        filmViewHolder.imageView.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), getImageDrawable(position), options));
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        BitmapUtils.calculateInSampleSize(options, filmViewHolder.imageView.getMeasuredWidth(), filmViewHolder.imageView.getMeasuredHeight());
+//        filmViewHolder.imageView.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), getImageDrawable(position), options));
+        filmViewHolder.imageView.setImageResource(getImageDrawable(position));
         filmViewHolder.textView.setText(film.getTitle());
         filmViewHolder.textView.setVisibility(View.INVISIBLE);
 
+        return view;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        return getItem(position).getSection().hashCode();
+    }
+
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+
+        final Film film = getItem(position);
+        HeaderViewHolder headerViewHolder;
+
+        if (null == convertView) {
+            view = LayoutInflater.from(mContext).inflate(mHeaderResource, parent, false);
+            TextView textView = (TextView) view.findViewById(R.id.tvwName);
+            headerViewHolder = new HeaderViewHolder(textView);
+            view.setTag(headerViewHolder);
+        } else {
+            headerViewHolder = (HeaderViewHolder) view.getTag();
+        }
+
+        headerViewHolder.textView.setText(film.getSection());
         return view;
     }
 
@@ -163,16 +148,32 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         }
     }
 
-    //    @Override
-    //    public int getViewTypeCount() {
-    //        return 2;
-    //    }
+    /**
+     * A static class that serves as the view holder for sticky grid headers.
+     */
+    static final class HeaderViewHolder {
 
+        /**
+         * View holder text view
+         */
+        public final TextView textView;
+
+        /**
+         * Parametric constructor. Sets view holder text view.
+         *
+         * @param textView text view to be set
+         */
+        HeaderViewHolder(TextView textView) {
+            this.textView = textView;
+        }
+
+    }
 
     /**
      * A static class that serves as the film view holder.
      */
     static final class FilmViewHolder {
+
         /**
          * View holder image view
          */
@@ -192,6 +193,7 @@ public class FilmAdapter extends ArrayAdapter<Film> {
             this.imageView = imageView;
             this.textView = textView;
         }
+
     }
 
 }

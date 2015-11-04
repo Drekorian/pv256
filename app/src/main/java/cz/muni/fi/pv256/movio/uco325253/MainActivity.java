@@ -1,26 +1,19 @@
 package cz.muni.fi.pv256.movio.uco325253;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewStub;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
@@ -32,28 +25,25 @@ import cz.muni.fi.pv256.movio.uco325253.model.Film;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private boolean mTablet;
     @SuppressWarnings("FieldCanBeLocal")
     private Toolbar mToolbar;
-    @SuppressWarnings("FieldCanBeLocal")
-    private GridView mGvwMovies;
-    @SuppressWarnings("FieldCanBeLocal")
-    private ViewStub mEmptyView;
-    @SuppressWarnings("FieldCanBeLocal")
-    private TextView mTvwEmpty;
     @SuppressWarnings("FieldCanBeLocal")
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     @SuppressWarnings("FieldCanBeLocal")
     private ListView mLeftDrawer;
 
+    private WeakReference<FilmDetailFragment> mFilmDetailFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mTablet = getResources().getBoolean(R.bool.tablet);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mGvwMovies = (GridView) findViewById(android.R.id.list);
-        mEmptyView = (ViewStub) findViewById(android.R.id.empty);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftDrawer = (ListView) findViewById(R.id.left_drawer);
 
@@ -68,73 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-
-        // adapter fake data
-        FilmAdapter adapter = new FilmAdapter(this, R.layout.item_film, new ArrayList<Film>() {{
-            add(new Film(0, "", "Doctor Who"));
-            add(new Film(0, "", "The Walking Dead"));
-            add(new Film(0, "", "The Big Bang Theory"));
-            add(new Film(0, "", "Jurassic World"));
-            add(new Film(0, "", "Maze Runner: The Scorch Trials"));
-            add(new Film(0, "", "Hotel Transylvania 2"));
-
-            add(new Film(0, "", "Doctor Who"));
-            add(new Film(0, "", "The Walking Dead"));
-            add(new Film(0, "", "The Big Bang Theory"));
-            add(new Film(0, "", "Jurassic World"));
-            add(new Film(0, "", "Maze Runner: The Scorch Trials"));
-            add(new Film(0, "", "Hotel Transylvania 2"));
-
-            add(new Film(0, "", "Doctor Who"));
-            add(new Film(0, "", "The Walking Dead"));
-            add(new Film(0, "", "The Big Bang Theory"));
-            add(new Film(0, "", "Jurassic World"));
-            add(new Film(0, "", "Maze Runner: The Scorch Trials"));
-            add(new Film(0, "", "Hotel Transylvania 2"));
-
-            add(new Film(0, "", "Doctor Who"));
-            add(new Film(0, "", "The Walking Dead"));
-            add(new Film(0, "", "The Big Bang Theory"));
-            add(new Film(0, "", "Jurassic World"));
-            add(new Film(0, "", "Maze Runner: The Scorch Trials"));
-            add(new Film(0, "", "Hotel Transylvania 2"));
-        }});
-
-        mGvwMovies.setAdapter(adapter);
-        mGvwMovies.setEmptyView(mEmptyView);
-
-        mTvwEmpty = (TextView) findViewById(R.id.tvwEmpty);
-
-        if (null != mTvwEmpty) {
-            mTvwEmpty.setText(isNetworkAvailable() ? R.string.no_data : R.string.no_connection);
-        }
-
-        final AdapterView.OnItemLongClickListener longClickListener = new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                FilmAdapter.FilmViewHolder viewHolder = (FilmAdapter.FilmViewHolder) view.getTag();
-
-                if (View.VISIBLE == viewHolder.textView.getVisibility()) {
-                    viewHolder.textView.setVisibility(View.INVISIBLE);
-                } else {
-                    viewHolder.textView.setVisibility(View.VISIBLE);
-                }
-
-                return true;
-            }
-        };
-
-        mGvwMovies.setOnItemLongClickListener(longClickListener);
-        mGvwMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, FilmDetailActivity.class);
-                startActivity(intent);
-            }
-
-        });
 
         mLeftDrawer.setAdapter(new ArrayAdapter<>(this, R.layout.list_item_menu, R.id.tvwName, new ArrayList<String>() {{
             add("Akční");
@@ -162,16 +85,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+
+        if (fragment instanceof FilmDetailFragment) {
+            mFilmDetailFragment = new WeakReference<>((FilmDetailFragment) fragment);
+        }
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+        mTablet = getResources().getBoolean(R.bool.tablet);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        Log.d("", "" + activeNetworkInfo);
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    /**
+     * Displays film detail for given film either in the new activity or detail fragment, based on
+     * the current configuration.
+     *
+     * @param film     film to display
+     * @param position position to display the poster image for
+     */
+    // TODO: position should be removed with the real data and image implementation
+    public void displayFilmDetail(Film film, int position) {
+        if (mTablet) {
+            if (null != mFilmDetailFragment) {
+                FilmDetailFragment filmDetailFragment = mFilmDetailFragment.get();
+
+                if (null != filmDetailFragment) {
+                    filmDetailFragment.setFilm(film, position);
+                }
+            }
+        } else {
+            Intent intent = new Intent(this, FilmDetailActivity.class);
+            intent.putExtra(FilmDetailActivity.EXTRA_KEY_FILM, film);
+            intent.putExtra(FilmDetailActivity.EXTRA_KEY_POSITION, position);
+            startActivity(intent);
+        }
     }
 
 }
