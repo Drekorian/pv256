@@ -63,14 +63,18 @@ public class FilmAdapter extends StickyGridHeadersSimpleArrayAdapter<Film> {
         View view = convertView;
 
         if (null == view) {
-            Log.i("", "inflate radku " + position);
+            if (BuildConfig.logging) {
+                Log.i("", "inflate radku " + position);
+            }
             view = LayoutInflater.from(mContext).inflate(mItemResource, parent, false);
             ImageView imageView = (ImageView) view.findViewById(R.id.ivwCover);
             TextView textView = (TextView) view.findViewById(R.id.tvwName);
             FilmViewHolder filmViewHolder = new FilmViewHolder(imageView, textView);
             view.setTag(filmViewHolder);
         } else {
-            Log.i("", "recyklace radku " + position);
+            if (BuildConfig.logging) {
+                Log.i("", "recyklace radku " + position);
+            }
         }
 
 //        if (2 >= position % 6) {

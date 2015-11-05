@@ -41,3 +41,11 @@ PV256 Android programming project
 - adds film detail activity and fragment
 - adds sections to the movie grid
 
+===============================================================================
+==   Week 06   ================================================================
+===============================================================================
+
+- adds automatic gradle app signing
+- adds secondary flavor
+- adds automatic build version control
+- adds Czech and Japanese translations

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">pv256</string>
+    <string name="film">フィルム</string>
+    <string name="opening">今週開きます</string>
+    <string name="theaters">劇場では今</string>
+
+    <string name="drawer_open">pv256 (オープン)</string>
+    <string name="drawer_close">pv256 (閉じました)</string>
+
+    <string name="no_data">データなし</string>
+    <string name="no_connection">何も接続しません</string>
+
+    <string name="cast">キャスト</string>
+    <string name="overview">概説</string>
+
+    <string name="gyllenhaal">Jake Gyllenhaal</string>
+    <string name="clarke">Jason Clarke</string>
+    <string name="description">世界最高の山「エベレスト」の頂上に到達するための危険な試みを囲むイベントに触発さは、二つの荘厳なの旅を記録し…</string>
+    <string name="director">ディレクター</string>
+    <string name="year">イヤー</string>
+    <string name="poster">ポスター</string>
+</resources>

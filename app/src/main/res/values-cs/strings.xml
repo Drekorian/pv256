@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">pv256</string>
+    <string name="film">Film</string>
+    <string name="opening">Premiéry tohoto týdne</string>
+    <string name="theaters">Právě v kinech</string>
+
+    <string name="drawer_open">pv256 (Menu otevřeno)</string>
+    <string name="drawer_close">pv256 (Menu zavřeno)</string>
+
+    <string name="no_data">žádná data</string>
+    <string name="no_connection">žádné připojení</string>
+
+    <string name="cast">Obsazení</string>
+    <string name="overview">Přehled</string>
+
+    <string name="gyllenhaal">Jake Gyllenhaal</string>
+    <string name="clarke">Jason Clarke</string>
+    <string name="description">Inspirováno událostmi obklopujícími zrádný pokus o dosažení vrcholku nejvyšší hory světa. \'Everest\' dokumentuje dechberoucí cestu dvou…</string>
+
+    <string name="director">Režisér</string>
+    <string name="year">Rok</string>
+    <string name="poster">Plakát</string>
+</resources>

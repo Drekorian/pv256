@@ -4,11 +4,11 @@
     <string name="opening">Opening this week</string>
     <string name="theaters">In theaters now</string>
 
-    <string name="drawer_open">pv256 (open)</string>
-    <string name="drawer_close">pv256 (closed)</string>
+    <string name="drawer_open">pv256 (Menu Open)</string>
+    <string name="drawer_close">pv256 (Menu Closed)</string>
 
-    <string name="no_data">žádná data</string>
-    <string name="no_connection">žádné připojení</string>
+    <string name="no_data">No data</string>
+    <string name="no_connection">No connection</string>
 
     <string name="cast">Cast</string>
     <string name="overview">Overview</string>
