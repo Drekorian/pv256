@@ -14,10 +14,8 @@
     <string name="cast">キャスト</string>
     <string name="overview">概説</string>
 
-    <string name="gyllenhaal">Jake Gyllenhaal</string>
-    <string name="clarke">Jason Clarke</string>
-    <string name="description">世界最高の山「エベレスト」の頂上に到達するための危険な試みを囲むイベントに触発さは、二つの荘厳なの旅を記録し…</string>
-    <string name="director">ディレクター</string>
-    <string name="year">イヤー</string>
     <string name="poster">ポスター</string>
+    <string name="backdrop">背景</string>
+
+    <string name="discover">発見</string>
 </resources>

@@ -3,6 +3,15 @@ package cz.muni.fi.pv256.movio.uco325253.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import cz.muni.fi.pv256.movio.uco325253.L;
+
 /**
  * A model class that hold film data.
  * <p/>
@@ -10,63 +19,92 @@ import android.os.Parcelable;
  */
 public final class Film implements Parcelable {
 
-    private final long mReleaseDate;
-    private final String mCoverPath;
-    private final String mTitle;
-    private final String mSection;
+    private static final String TAG = Film.class.getSimpleName();
+
+    private static final String SERIALIZED_NAME_BACKDROP_PATH = "backdrop_path";
+    private static final String SERIALIZED_NAME_ID = "id";
+    private static final String SERIALIZED_NAME_OVERVIEW = "overview";
+    private static final String SERIALIZED_NAME_RELEASE_DATE = "release_date";
+    private static final String SERIALIZED_NAME_POSTER_PATH = "poster_path";
+    private static final String SERIALIZED_NAME_TITLE = "title";
+
+    @SuppressWarnings("SimpleDateFormat")
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+    @SerializedName(SERIALIZED_NAME_BACKDROP_PATH)
+    private String mBackdropPath;
+    @SerializedName(SERIALIZED_NAME_ID)
+    private long id;
+    @SerializedName(SERIALIZED_NAME_OVERVIEW)
+    private String mOverview;
+    @SerializedName(SERIALIZED_NAME_RELEASE_DATE)
+    private String mReleaseDate;
+    @SerializedName(SERIALIZED_NAME_POSTER_PATH)
+    private String mPosterPath;
+    @SerializedName(SERIALIZED_NAME_TITLE)
+    private String mTitle;
+
+    private String mSection;
 
     /**
-     * Parametric constructor. Sets all film attributes.
-     *
-     * @param releaseDate release date in millis to be set
-     * @param coverPath   cover path to be set
-     * @param title       film title to be set
-     */
-    public Film(long releaseDate, String coverPath, String title, String section) {
-        mReleaseDate = releaseDate;
-        mCoverPath = coverPath;
-        mTitle = title;
-        mSection = section;
-    }
-
-    /**
-     * Parametric constructor. Creates the film from parcelable package.
-     *
-     * @param in parcelable package to create the film from
-     */
-    protected Film(Parcel in) {
-        this.mReleaseDate = in.readLong();
-        this.mCoverPath = in.readString();
-        this.mTitle = in.readString();
-        this.mSection = in.readString();
-    }
-
-    /**
-     * Returns movie release date in milliseconds since the beginning of the computer age.
-     *
-     * @return movie release date in milliseconds since the beginning of the computer age
+     * Default constructor. Required by the GSON framework.
      */
     @SuppressWarnings("unused")
-    public long getReleaseDate() {
-        return mReleaseDate;
+    public Film() {
+    }
+
+    public String getBackdropPath() {
+        L.d(TAG, "getBackdropPath() called");
+        return mBackdropPath;
+    }
+
+    public long getId() {
+        L.d(TAG, "getId() called");
+        return id;
+    }
+
+    public void setId(long id) {
+        L.d(TAG, "setId() called, id: " + id);
+        this.id = id;
+    }
+
+    public Integer getReleaseYear() {
+        L.d(TAG, "getReleaseYear()");
+
+        if (null == mReleaseDate) {
+            return null;
+        }
+
+        Calendar calendar = new GregorianCalendar();
+
+        try {
+            calendar.setTimeInMillis(DATE_FORMAT.parse(mReleaseDate).getTime());
+            return calendar.get(Calendar.YEAR);
+        } catch (ParseException ex) {
+            L.e(TAG, "Unable to parse release date: " + mReleaseDate);
+        }
+
+        return null;
     }
 
     /**
-     * Returns movie cover path.
+     * Returns film cover path.
      *
-     * @return movie cover path
+     * @return film cover path
      */
     @SuppressWarnings("unused")
-    public String getCoverPath() {
-        return mCoverPath;
+    public String getPosterPath() {
+        L.d(TAG, "getPosterPath()");
+        return mPosterPath;
     }
 
     /**
-     * Returns movie title.
+     * Returns film title.
      *
-     * @return movie title
+     * @return film title
      */
     public String getTitle() {
+        L.d(TAG, "getTitle() called");
         return mTitle;
     }
 
@@ -76,8 +114,43 @@ public final class Film implements Parcelable {
      * @return film section name
      */
     public String getSection() {
+        L.d(TAG, "getSection() called");
         return mSection;
     }
+
+    /**
+     * Sets film section.
+     *
+     * @param section film section to be set
+     */
+    public void setSection(String section) {
+        L.d(TAG, "setSection() called, section: " + section);
+        mSection = section;
+    }
+
+    /**
+     * Returns film overview.
+     *
+     * @return film overview
+     */
+    public String getOverview() {
+        L.d(TAG, "getOverview() called");
+        return mOverview;
+    }
+
+    /**
+     * Sets film overview.
+     *
+     * @param overview film overview to be set
+     */
+    public void setOverview(String overview) {
+        L.d(TAG, "setOverview() called, overview: " + overview);
+        mOverview = overview;
+    }
+
+    /*
+     * Auto-generated. DO NOT MODIFY manually, re-create via the Android Studio plug-in.
+     */
 
     @Override
     public int describeContents() {
@@ -86,15 +159,25 @@ public final class Film implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.mReleaseDate);
-        dest.writeString(this.mCoverPath);
+        dest.writeString(this.mBackdropPath);
+        dest.writeLong(this.id);
+        dest.writeString(this.mOverview);
+        dest.writeString(this.mReleaseDate);
+        dest.writeString(this.mPosterPath);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSection);
     }
 
-    /**
-     * Parcelable creator.
-     */
+    protected Film(Parcel in) {
+        this.mBackdropPath = in.readString();
+        this.id = in.readLong();
+        this.mOverview = in.readString();
+        this.mReleaseDate = in.readString();
+        this.mPosterPath = in.readString();
+        this.mTitle = in.readString();
+        this.mSection = in.readString();
+    }
+
     public static final Creator<Film> CREATOR = new Creator<Film>() {
         public Film createFromParcel(Parcel source) {
             return new Film(source);

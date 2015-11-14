@@ -10,10 +10,12 @@
     <dimen name="movie_grid_header_margin_bottom">12dp</dimen>
 
     <dimen name="film_detail_banner_height">200dp</dimen>
+    <dimen name="film_detail_backdrop_height">260dp</dimen>
     <dimen name="film_detail_margin">16dp</dimen>
     <dimen name="film_detail_heading_margin">132dp</dimen>
     <dimen name="film_detail_heading_margin_bottom">16dp</dimen>
-    <dimen name="film_detail_poster_width">100dp</dimen>
+    <dimen name="film_detail_poster_width">150dp</dimen>
+    <dimen name="film_detail_poster_height">220dp</dimen>
     <dimen name="film_detail_cast_dimension">50dp</dimen>
 
     <dimen name="table_cast_margin_right">12dp</dimen>

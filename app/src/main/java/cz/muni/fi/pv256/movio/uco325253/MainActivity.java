@@ -25,6 +25,8 @@ import cz.muni.fi.pv256.movio.uco325253.model.Film;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private boolean mTablet;
     @SuppressWarnings("FieldCanBeLocal")
     private Toolbar mToolbar;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        L.d(TAG, "onCreate() called, savedInstanceState: " + savedInstanceState);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -69,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        L.d(TAG, "onOptionsItemSelected() called, item: " + item);
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerToggle.onOptionsItemSelected(item);
@@ -80,12 +86,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
+        L.d(TAG, "onPostCreate() called, savedInstanceState: " + savedInstanceState);
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
 
     @Override
     public void onAttachFragment(Fragment fragment) {
+        L.d(TAG, "onAttachFragment() called, fragment: " + fragment);
+
         super.onAttachFragment(fragment);
 
         if (fragment instanceof FilmDetailFragment) {
@@ -95,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        L.d(TAG, "onConfigurationChanged() called, newConfig: " + newConfig);
+
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
         mTablet = getResources().getBoolean(R.bool.tablet);
@@ -104,23 +115,22 @@ public class MainActivity extends AppCompatActivity {
      * Displays film detail for given film either in the new activity or detail fragment, based on
      * the current configuration.
      *
-     * @param film     film to display
-     * @param position position to display the poster image for
+     * @param film film to display
      */
-    // TODO: position should be removed with the real data and image implementation
-    public void displayFilmDetail(Film film, int position) {
+    public void displayFilmDetail(Film film) {
+        L.d(TAG, "displayFilmDetail() called, film: " + film);
+
         if (mTablet) {
             if (null != mFilmDetailFragment) {
                 FilmDetailFragment filmDetailFragment = mFilmDetailFragment.get();
 
                 if (null != filmDetailFragment) {
-                    filmDetailFragment.setFilm(film, position);
+                    filmDetailFragment.setFilm(film);
                 }
             }
         } else {
             Intent intent = new Intent(this, FilmDetailActivity.class);
             intent.putExtra(FilmDetailActivity.EXTRA_KEY_FILM, film);
-            intent.putExtra(FilmDetailActivity.EXTRA_KEY_POSITION, position);
             startActivity(intent);
         }
     }

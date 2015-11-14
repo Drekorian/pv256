@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,11 +26,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/lltBanner"
+                    <ImageView
+                        android:id="@+id/ivwBackdrop"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/film_detail_banner_height"
-                        android:background="@android:color/black"
+                        android:background="?attr/colorPrimary"
+                        android:contentDescription="@string/backdrop"
                         android:orientation="vertical"/>
 
                     <RelativeLayout
@@ -37,41 +39,6 @@
                         android:layout_height="@dimen/film_detail_banner_height"
                         android:background="?attr/colorPrimary"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvwDirector"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginBottom="@dimen/film_detail_margin"
-                            android:layout_marginLeft="@dimen/film_detail_heading_margin"
-                            android:layout_marginStart="@dimen/film_detail_heading_margin"
-                            android:text="@string/director"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"/>
-
-                        <TextView
-                            android:id="@+id/tvwTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_above="@id/tvwDirector"
-                            android:layout_alignLeft="@id/tvwDirector"
-                            android:layout_alignStart="@id/tvwDirector"
-                            android:layout_marginBottom="@dimen/film_detail_heading_margin_bottom"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"/>
-
-                        <TextView
-                            android:id="@+id/tvwYear"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@id/tvwTitle"
-                            android:layout_marginLeft="@dimen/film_detail_margin"
-                            android:layout_marginStart="@dimen/film_detail_margin"
-                            android:layout_toEndOf="@id/tvwTitle"
-                            android:layout_toRightOf="@id/tvwTitle"
-                            android:text="@string/year"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"/>
 
                     </RelativeLayout>
 
@@ -84,18 +51,64 @@
                     <ImageView
                         android:id="@+id/ivwPoster"
                         android:layout_width="@dimen/film_detail_poster_width"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/film_detail_poster_height"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_marginBottom="@dimen/film_detail_margin"
                         android:layout_marginLeft="@dimen/film_detail_margin"
                         android:layout_marginStart="@dimen/film_detail_margin"
-                        android:adjustViewBounds="true"
                         android:contentDescription="@string/poster"/>
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tvwDirector"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/ivwPoster"
+                        android:layout_marginBottom="@dimen/film_detail_margin"
+                        android:layout_marginLeft="@dimen/film_detail_margin"
+                        android:layout_marginStart="@dimen/film_detail_margin"
+                        android:layout_toEndOf="@id/ivwPoster"
+                        android:layout_toRightOf="@id/ivwPoster"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"/>
 
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/tvwDirector"
+                        android:layout_marginLeft="@dimen/film_detail_margin"
+                        android:layout_marginStart="@dimen/film_detail_margin"
+                        android:layout_toEndOf="@id/ivwPoster"
+                        android:layout_toRightOf="@id/ivwPoster"
+                        android:shrinkColumns="0"
+                        android:stretchColumns="1">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:id="@+id/tvwTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"/>
+
+                            <TextView
+                                android:id="@+id/tvwYear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/film_detail_margin"
+                                android:layout_marginLeft="@dimen/film_detail_margin"
+                                android:layout_marginRight="@dimen/film_detail_margin"
+                                android:layout_marginStart="@dimen/film_detail_margin"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"/>
+
+                        </TableRow>
+                    </TableLayout>
+                </RelativeLayout>
             </FrameLayout>
 
             <LinearLayout
@@ -114,60 +127,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                 <TableLayout
+                    android:id="@+id/tltCast"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/film_detail_heading_margin_bottom">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/table_cast_margin_right"
-                            android:layout_marginRight="@dimen/table_cast_margin_right"
-                            android:adjustViewBounds="true"
-                            android:contentDescription="@string/gyllenhaal"
-                            android:maxHeight="@dimen/film_detail_cast_dimension"
-                            android:maxWidth="@dimen/film_detail_cast_dimension"
-                            android:src="@drawable/gyllenhaal"
-                            android:textAppearance="@style/TextAppearance.AppCompat"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="@string/gyllenhaal"
-                            android:textAppearance="@style/TextAppearance.AppCompat"/>
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/film_detail_heading_margin_bottom">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/table_cast_margin_right"
-                            android:layout_marginRight="@dimen/table_cast_margin_right"
-                            android:adjustViewBounds="true"
-                            android:contentDescription="@string/clarke"
-                            android:maxHeight="@dimen/film_detail_cast_dimension"
-                            android:maxWidth="@dimen/film_detail_cast_dimension"
-                            android:src="@drawable/clarke"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="@string/clarke"
-                            android:textAppearance="@style/TextAppearance.AppCompat"/>
-
-                    </TableRow>
-                </TableLayout>
+                    android:layout_height="wrap_content"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -183,10 +145,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                 <TextView
-                    android:id="@+id/tvwDescription"
+                    android:id="@+id/tvwOverview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/description"
                     android:textAppearance="@style/TextAppearance.AppCompat"/>
 
             </LinearLayout>
@@ -202,7 +163,7 @@
         android:layout_margin="@dimen/film_detail_margin"
         android:clickable="true"
         android:src="@drawable/ic_action_add"
-        app:layout_anchor="@id/lltBanner"
+        app:layout_anchor="@id/ivwBackdrop"
         app:layout_anchorGravity="bottom|right|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

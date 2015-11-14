@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 // version variants
 
 def VERSION_MAJOR = 0
-def VERSION_MINOR = 6
+def VERSION_MINOR = 7
 def VERSION_PATCH = 0
 def VERSION_BUILD = 0
 
@@ -69,4 +69,7 @@ dependencies {
     //noinspection GradleDependency
     compile 'com.android.support:design:22.2.1'
     compile 'com.tonicartos:stickygridheaders:1.0.1'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

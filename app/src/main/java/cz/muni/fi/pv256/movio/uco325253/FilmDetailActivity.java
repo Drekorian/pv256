@@ -17,13 +17,12 @@ import cz.muni.fi.pv256.movio.uco325253.model.Film;
  */
 public class FilmDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = FilmDetailActivity.class.getSimpleName();
+
     public static final String EXTRA_KEY_FILM = "film";
-    public static final String EXTRA_KEY_POSITION = "position";
 
     @SuppressWarnings("FieldCanBeLocal")
     private Film mFilm = null;
-    @SuppressWarnings("FieldCanBeLocal")
-    private int mPosition;
     @SuppressWarnings("FieldCanBeLocal")
     private Toolbar mToolbar;
 
@@ -31,6 +30,8 @@ public class FilmDetailActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        L.d(TAG, "onCreate() called, savedInstanceState: " + savedInstanceState);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_detail);
 
@@ -47,13 +48,15 @@ public class FilmDetailActivity extends AppCompatActivity {
         final Bundle extras = getIntent().getExtras();
         if (null != extras && extras.containsKey(EXTRA_KEY_FILM)) {
             mFilm = extras.getParcelable(EXTRA_KEY_FILM);
-            mPosition = extras.getInt(EXTRA_KEY_POSITION);
-            mFilmDetailFragment.get().setFilm(mFilm, mPosition);
+            mFilmDetailFragment.get().setFilm(mFilm);
+            getSupportActionBar().setTitle(mFilm.getTitle());
         }
     }
 
     @Override
     public void onAttachFragment(Fragment fragment) {
+        L.d(TAG, "onAttachFragment() called, fragment: " + fragment);
+
         super.onAttachFragment(fragment);
         if (fragment instanceof FilmDetailFragment) {
             mFilmDetailFragment = new WeakReference<>((FilmDetailFragment) fragment);

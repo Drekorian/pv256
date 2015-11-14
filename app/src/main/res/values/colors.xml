@@ -19,4 +19,7 @@
     <color name="movie_title_text_color">#ffffff</color>
     <color name="movie_title_background_color">#99000000</color>
 
+    <color name="placeholder_dark">#242424</color>
+    <color name="placeholder_light">#4e4e4e</color>
+
 </resources>

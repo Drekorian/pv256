@@ -14,11 +14,8 @@
     <string name="cast">Obsazení</string>
     <string name="overview">Přehled</string>
 
-    <string name="gyllenhaal">Jake Gyllenhaal</string>
-    <string name="clarke">Jason Clarke</string>
-    <string name="description">Inspirováno událostmi obklopujícími zrádný pokus o dosažení vrcholku nejvyšší hory světa. \'Everest\' dokumentuje dechberoucí cestu dvou…</string>
-
-    <string name="director">Režisér</string>
-    <string name="year">Rok</string>
     <string name="poster">Plakát</string>
+    <string name="backdrop">Pozadí</string>
+
+    <string name="discover">Novinky</string>
 </resources>

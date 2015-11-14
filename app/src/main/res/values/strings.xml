@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">pv256</string>
     <string name="film">Film</string>
@@ -13,10 +14,8 @@
     <string name="cast">Cast</string>
     <string name="overview">Overview</string>
 
-    <string name="gyllenhaal">Jake Gyllenhaal</string>
-    <string name="clarke">Jason Clarke</string>
-    <string name="description">Inspired by the events surrounding a treacherous attempt to reach the summit of the world\'s highest mountain, \'Everest\' documents the awe-inspiring journey of two…</string>
-    <string name="director">Director</string>
-    <string name="year">Year</string>
     <string name="poster">Poster</string>
+    <string name="backdrop">Backdrop</string>
+
+    <string name="discover">Discover</string>
 </resources>

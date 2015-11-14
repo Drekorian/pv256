@@ -14,23 +14,5 @@
         android:theme="@style/AppTheme.Secondary"
         tools:replace="android:theme">
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".FilmDetailActivity"
-            android:label="@string/app_name">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
-
-        </activity>
-
     </application>
 </manifest>
