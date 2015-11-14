@@ -49,3 +49,12 @@ PV256 Android programming project
 - adds secondary flavor
 - adds automatic build version control
 - adds Czech and Japanese translations
+
+===============================================================================
+==   Week 07   ================================================================
+===============================================================================
+
+- adds support API data loading
+- adds singleton data storage
+- adds support for GSON parsing
+- adds Picasso image loading
