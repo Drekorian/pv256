@@ -10,37 +10,17 @@ public class TheMovieDB {
     /**
      * HTTP schema for The Movie DB API
      */
-    public static final String API_SCHEME = "http";
-    /**
-     * HTTP host for The Movie DB API
-     */
-    public static final String API_HOST = "api.themoviedb.org";
-    /**
-     * HTTP attribute for The Movie DB API version
-     */
-    public static final String API_VERSION = "3";
-
-    /**
-     * HTTP parameter for discovering movies
-     */
-    public static final String API_CONTROLLER_DISCOVER = "discover";
-    /**
-     * HTTP controller for movies
-     */
-    public static final String API_CONTROLLER_MOVIE = "movie";
-    /**
-     * HTTP parameter for movie details
-     */
-    public static final String API_PARAM_MOVIE = "movie";
-    /**
-     * HTTP parameter for movie credits
-     */
-    public static final String API_PARAM_CREDITS = "credits";
+    public static final String API_BASE_URL = "http://api.themoviedb.org";
 
     /**
      * The Movie DB images API base URL.
      */
     public static final String API_IMAGES_BASE_URL = "http://image.tmdb.org/t/p/original";
+
+    /**
+     * The Movie DB images API base URL
+     */
+    public static final String QUERY_PARAM_VALUE_AVG_RATING_DESC = "avg_rating.desc";
 
     /**
      * The Movie DB API key.
@@ -54,4 +34,3 @@ public class TheMovieDB {
     }
 
 }
-

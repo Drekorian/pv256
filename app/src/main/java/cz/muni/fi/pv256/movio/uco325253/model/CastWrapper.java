@@ -2,8 +2,6 @@ package cz.muni.fi.pv256.movio.uco325253.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 import cz.muni.fi.pv256.movio.uco325253.L;
 
 /**
@@ -18,29 +16,21 @@ public class CastWrapper {
     private static final String SERIALIZED_NAME_CAST = "cast";
     private static final String SERIALIZED_NAME_CREW = "crew";
 
+    @SuppressWarnings("unused")
     @SerializedName(SERIALIZED_NAME_CAST)
-    private List<Cast> mCast;
+    private Cast[] mCast;
+    @SuppressWarnings("unused")
     @SerializedName(SERIALIZED_NAME_CREW)
-    private List<Cast> mCrew;
+    private Cast[] mCrew;
 
     /**
      * Returns a list of cast.
      *
      * @return a list of cast
      */
-    public List<Cast> getCast() {
+    public Cast[] getCast() {
         L.d(TAG, "getCast() called");
         return mCast;
-    }
-
-    /**
-     * Sets a list of cast.
-     *
-     * @param cast list of cast to be set
-     */
-    public void setCast(List<Cast> cast) {
-        L.d(TAG, "setCast() called, cast: " + cast);
-        mCast = cast;
     }
 
     /**
@@ -48,20 +38,9 @@ public class CastWrapper {
      *
      * @return a list of crew
      */
-    public List<Cast> getCrew() {
+    public Cast[] getCrew() {
         L.d(TAG, "getCrew() called");
         return mCrew;
-    }
-
-    /**
-     * Sets a list of crew.
-     *
-     * @param crew a list of crew to be set
-     */
-    @SuppressWarnings("unused")
-    public void setCrew(List<Cast> crew) {
-        L.d(TAG, "setCrew() called, crew: " + crew);
-        mCrew = crew;
     }
 
 }

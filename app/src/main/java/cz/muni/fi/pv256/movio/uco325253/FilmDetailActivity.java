@@ -48,9 +48,18 @@ public class FilmDetailActivity extends AppCompatActivity {
         final Bundle extras = getIntent().getExtras();
         if (null != extras && extras.containsKey(EXTRA_KEY_FILM)) {
             mFilm = extras.getParcelable(EXTRA_KEY_FILM);
-            mFilmDetailFragment.get().setFilm(mFilm);
-            getSupportActionBar().setTitle(mFilm.getTitle());
+
+            if (null != mFilm) {
+                getSupportActionBar().setTitle(mFilm.getTitle());
+            }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        L.d(TAG, "onCreate() called");
+        super.onStart();
+        mFilmDetailFragment.get().setFilm(mFilm);
     }
 
     @Override

@@ -18,4 +18,10 @@
     <string name="backdrop">Pozadí</string>
 
     <string name="discover">Novinky</string>
+
+    <string name="upcoming_films">Nové filmy</string>
+    <string name="in_theaters">Právě v kinech</string>
+
+    <string name="parse_error_title">Hups… něco se pokazilo</string>
+    <string name="parse_error_text">Nastala chyba při parsování dat z MovieDB API</string>
 </resources>

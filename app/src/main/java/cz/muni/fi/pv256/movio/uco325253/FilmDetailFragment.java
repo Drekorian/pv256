@@ -1,9 +1,14 @@
 package cz.muni.fi.pv256.movio.uco325253;
 
-import android.os.AsyncTask;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +16,10 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.Response;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.io.IOException;
-
 import cz.muni.fi.pv256.movio.uco325253.model.Cast;
-import cz.muni.fi.pv256.movio.uco325253.model.CastWrapper;
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
 
 /**
@@ -31,7 +31,6 @@ public class FilmDetailFragment extends Fragment {
 
     private static final String TAG = FilmDetailFragment.class.getSimpleName();
 
-    private static final String DEPARTMENT_DIRECTING = "Directing";
     private static final String SAVE_STATE_KEY_FILM = "film";
 
     private View mRoot;
@@ -45,11 +44,11 @@ public class FilmDetailFragment extends Fragment {
     private Film mFilm;
     private Picasso mPicasso;
 
-    private LoadTask mLoadTask;
+    private BroadcastReceiver mBroadcastReceiver;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         L.d(TAG, "onCreateView() called, inflater: " + inflater + ", container: " + container + ", savedInstanceState: " + savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_film_detail, container, false);
@@ -67,6 +66,13 @@ public class FilmDetailFragment extends Fragment {
         if (BuildConfig.DEBUG) {
             mPicasso.setIndicatorsEnabled(true);
         }
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                processFilmDetails(inflater);
+            }
+        };
 
         return view;
     }
@@ -114,27 +120,15 @@ public class FilmDetailFragment extends Fragment {
             if (!DataLoader.getInstance().hasDirectorAndCast(mFilm.getId())) {
                 L.d(TAG, "Loading director and cast for " + mFilm.getTitle() + ".");
 
-                if (null != mLoadTask) {
-                    mLoadTask.cancel(true);
-                }
-
-                mLoadTask = new LoadTask(mFilm.getId());
-                mLoadTask.execute();
+                LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mBroadcastReceiver, new IntentFilter(LoadService.INTENT_ACTION_DETAIL));
+                Intent intent = new Intent(getActivity(), LoadService.class);
+                intent.putExtra(LoadService.EXTRAS_KEY_LOAD, LoadService.EXTRAS_VALUE_DETAILS);
+                intent.putExtra(LoadService.EXTRAS_KEY_ID, mFilm.getId());
+                getActivity().startService(intent);
             } else {
                 L.d(TAG, "Director and cast cached.");
+                processFilmDetails(LayoutInflater.from(getActivity()));
             }
-        }
-    }
-
-    @Override
-    public void onStop() {
-        L.d(TAG, "onStop()");
-
-        super.onStop();
-
-        if (null != mLoadTask) {
-            mLoadTask.cancel(true);
-            mLoadTask = null;
         }
     }
 
@@ -144,88 +138,30 @@ public class FilmDetailFragment extends Fragment {
         outState.putParcelable(SAVE_STATE_KEY_FILM, mFilm);
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, Boolean> {
+    private void processFilmDetails(@NonNull LayoutInflater inflater) {
+        mDirector.setText(DataLoader.getInstance().getDirector(mFilm.getId()));
 
-        private Gson mGson;
-        private long mFilmID;
+        final Transformation transformation = new CircleTransformation();
 
-        /**
-         * Parametric constructor. Sets film ID.
-         *
-         * @param filmID unique film ID to be set
-         */
-        public LoadTask(long filmID) {
-            mGson = new Gson();
-            mFilmID = filmID;
-        }
+        for (Cast cast : DataLoader.getInstance().getCast(mFilm.getId())) {
+            View view = inflater.inflate(R.layout.item_cast, mCast, false);
+            ImageView ivwCast = (ImageView) view.findViewById(R.id.ivwCast);
+            TextView tvwCast = (TextView) view.findViewById(R.id.tvwCast);
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            final Response response = DataLoader.getInstance().loadCast(mFilmID);
+            tvwCast.setText(cast.getName());
+            mCast.addView(view);
 
-            if (null != response && response.isSuccessful()) {
-                try {
-                    CastWrapper entireCast = mGson.fromJson(response.body().charStream(), CastWrapper.class);
-
-                    DataLoader.getInstance().addCast(mFilmID, entireCast.getCast());
-
-                    for (Cast cast : entireCast.getCrew()) {
-                        if (DEPARTMENT_DIRECTING.equals(cast.getDepartment())) {
-                            DataLoader.getInstance().addDirector(mFilmID, cast.getName());
-                            break;
-                        }
-                    }
-
-                    response.body().close();
-                    return Boolean.TRUE;
-
-                } catch (IOException ex) {
-                    L.e(TAG, "Unable to parse cast, original exception " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
-                    ex.printStackTrace();
-                }
-            }
-
-            return Boolean.FALSE;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-
-            if (null != result) {
-                if (result) {
-                    mDirector.setText(DataLoader.getInstance().getDirector(mFilmID));
-
-                    final LayoutInflater inflater = LayoutInflater.from(getActivity());
-                    final Transformation transformation = new CircleTransformation();
-
-                    for (Cast cast : DataLoader.getInstance().getCast(mFilmID)) {
-                        View view = inflater.inflate(R.layout.item_cast, mCast, false);
-                        ImageView ivwCast = (ImageView) view.findViewById(R.id.ivwCast);
-                        TextView tvwCast = (TextView) view.findViewById(R.id.tvwCast);
-
-                        tvwCast.setText(cast.getName());
-                        mCast.addView(view);
-
-                        if (null != cast.getProfilePath()) {
-                            L.d(TAG, "Loading cast photo for " + cast.getName() + ".");
-                            mPicasso.load(TheMovieDB.API_IMAGES_BASE_URL + cast.getProfilePath())
-                                    .fit()
-                                    .centerCrop()
-                                    .transform(transformation)
-                                    .into(ivwCast);
-                        } else {
-                            L.i(TAG, "Cast photo for " + cast.getName() + " is null.");
-                        }
-                    }
-                } else {
-                    L.e(TAG, "Unable to publish the load result, result not successful.");
-                }
+            if (null != cast.getProfilePath()) {
+                L.d(TAG, "Loading cast photo for " + cast.getName() + ".");
+                mPicasso.load(TheMovieDB.API_IMAGES_BASE_URL + cast.getProfilePath())
+                        .fit()
+                        .centerCrop()
+                        .transform(transformation)
+                        .into(ivwCast);
             } else {
-                L.e(TAG, "Unable to publish the load result, result is null.");
+                L.i(TAG, "Cast photo for " + cast.getName() + " is null.");
             }
         }
-
     }
 
 }

@@ -30,5 +30,7 @@
 
         </activity>
 
+        <service android:name=".LoadService"/>
+
     </application>
 </manifest>

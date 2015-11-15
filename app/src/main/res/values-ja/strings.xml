@@ -18,4 +18,10 @@
     <string name="backdrop">背景</string>
 
     <string name="discover">発見</string>
+
+    <string name="upcoming_films">今後の映画</string>
+    <string name="in_theaters">映画館</string>
+
+    <string name="parse_error_title">おっと…何かが間違っていました</string>
+    <string name="parse_error_text">MovieDB APIを構文解析エラー</string>
 </resources>

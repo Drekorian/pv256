@@ -18,4 +18,10 @@
     <string name="backdrop">Backdrop</string>
 
     <string name="discover">Discover</string>
+
+    <string name="upcoming_films">Upcoming films</string>
+    <string name="in_theaters">In Theaters</string>
+
+    <string name="parse_error_title">Oops… something went wrong</string>
+    <string name="parse_error_text">Error parsing The MovieDB API</string>
 </resources>
