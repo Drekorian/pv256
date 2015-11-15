@@ -1,6 +1,7 @@
 package cz.muni.fi.pv256.movio.uco325253;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,7 @@ public class FilmAdapter extends StickyGridHeadersSimpleArrayAdapter<Film> {
                     .into(filmViewHolder.imageView);
         } else {
             L.i(TAG, "Poster path for " + film.getTitle() + " is null.");
+            filmViewHolder.imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.film_placeholder));
         }
 
         return view;
