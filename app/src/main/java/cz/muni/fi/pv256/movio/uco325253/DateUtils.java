@@ -14,7 +14,7 @@ public class DateUtils {
 
     private static final String TAG = DateUtils.class.getSimpleName();
 
-    private static final String THE_MOVIE_DB_API_FORMAT = "dd-MM-yyyy";
+    private static final String THE_MOVIE_DB_API_FORMAT = "yyyy-MM-dd";
     private static final int DAY = 1;
     private static final int WEEK = 7;
 
