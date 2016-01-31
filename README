@@ -65,3 +65,13 @@ PV256 Android programming project
 
 - moves loading into an IntentService
 - adds notification error handling
+
+===============================================================================
+==   Week 09   ================================================================
+===============================================================================
+
+- adds persistent data storage
+- implements ContentProvider
+- implements Loader
+- adds Spinner to switch between new films and favorites in the DB
+- adds simple DB test
