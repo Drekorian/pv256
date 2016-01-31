@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import cz.muni.fi.pv256.movio.uco325253.R;
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
 
 import static cz.muni.fi.pv256.movio.uco325253.db.FilmContract.FilmEntry;
@@ -141,6 +142,7 @@ public class FilmManager {
         Film film = new Film();
         film.setId(cursor.getLong(COLUMN_FILM_ID));
         film.setTitle(cursor.getString(COLUMN_FILM_TITLE));
+        film.setSection(mContext.getString(R.string.section_favorites));
         return film;
     }
 

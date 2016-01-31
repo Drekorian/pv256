@@ -24,4 +24,6 @@
 
     <string name="parse_error_title">Oops… something went wrong</string>
     <string name="parse_error_text">Error parsing The MovieDB API</string>
+
+    <string name="section_favorites">Favorites</string>
 </resources>

@@ -186,6 +186,25 @@ public final class Film implements Parcelable {
         dest.writeString(this.mSection);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        // TODO: extend whenever you decide to upgrade the DB schema
+        if (null == o || !(o instanceof Film)) {
+            return false;
+        }
+
+        Film other = (Film) o;
+        return id == other.id &&
+               mTitle.equals(other.mTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        // TODO: extend whenever you decide to upgrade the DB schema
+        return (int) id +
+               (101 * mTitle.hashCode());
+    }
+
     protected Film(Parcel in) {
         this.mBackdropPath = in.readString();
         this.id = in.readLong();

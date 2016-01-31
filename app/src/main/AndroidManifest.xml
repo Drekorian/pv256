@@ -32,5 +32,10 @@
 
         <service android:name=".LoadService"/>
 
+        <provider
+            android:name=".db.FilmProvider"
+            android:authorities="cz.muni.fi.pv256.movio.uco325253"
+            android:exported="false"/>
+
     </application>
 </manifest>

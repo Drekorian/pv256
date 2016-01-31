@@ -24,4 +24,5 @@
 
     <string name="parse_error_title">Hups… něco se pokazilo</string>
     <string name="parse_error_text">Nastala chyba při parsování dat z MovieDB API</string>
+    <string name="section_favorites">Oblíbené</string>
 </resources>

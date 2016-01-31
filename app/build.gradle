@@ -3,13 +3,14 @@ apply plugin: 'com.android.application'
 // version variants
 
 def VERSION_MAJOR = 0
-def VERSION_MINOR = 7
+def VERSION_MINOR = 9
 def VERSION_PATCH = 0
 def VERSION_BUILD = 0
 
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
+    //noinspection GroovyAssignabilityCheck
     defaultConfig {
         applicationId "cz.muni.fi.pv256.movio.uco325253"
         minSdkVersion 15
@@ -27,6 +28,7 @@ android {
         }
     }
 
+    //noinspection GroovyAssignabilityCheck
     signingConfigs {
         release {
             storeFile file(RELEASE_STORE_FILE)
@@ -36,6 +38,7 @@ android {
         }
     }
 
+    //noinspection GroovyAssignabilityCheck,GroovyAssignabilityCheck
     buildTypes {
         //noinspection GroovyMissingReturnStatement
         release {
@@ -50,6 +53,7 @@ android {
             buildConfigField "boolean", "logging", "true"
         }
     }
+    //noinspection GroovyAssignabilityCheck
     productFlavors {
         //noinspection GroovyMissingReturnStatement
         primary {
@@ -62,6 +66,7 @@ android {
     }
 }
 
+//noinspection GroovyAssignabilityCheck
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleDependency
@@ -73,4 +78,9 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+
+    // Unit testing dependencies
+    androidTestCompile 'junit:junit:4.12'
+    // Set this dependency if you want to use Hamcrest matching
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
 }
