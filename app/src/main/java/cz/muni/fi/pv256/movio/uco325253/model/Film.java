@@ -73,7 +73,10 @@ public final class Film implements Parcelable {
     public String getReleaseDate() {
         L.d(TAG, "getReleaseDate()");
 
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+        // replace default short pattern with full year pattern
+        SimpleDateFormat simpleDateFormat = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
+        String newPattern = simpleDateFormat.toPattern().replace("yy", "yyyy");
+        simpleDateFormat.applyPattern(newPattern);
 
         if (null == mReleaseDate) {
             return null;
@@ -83,7 +86,7 @@ public final class Film implements Parcelable {
 
         try {
             calendar.setTimeInMillis(DATE_FORMAT.parse(mReleaseDate).getTime());
-            return dateFormat.format(calendar.getTime());
+            return simpleDateFormat.format(calendar.getTime());
         } catch (ParseException ex) {
             L.e(TAG, "Unable to parse release date: " + mReleaseDate);
         }

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import cz.muni.fi.pv256.movio.uco325253.db.FilmManager;
 import cz.muni.fi.pv256.movio.uco325253.model.Cast;
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
 
@@ -42,9 +44,14 @@ public class FilmDetailFragment extends Fragment {
     private TextView mOverview;
     private TableLayout mCast;
     private Film mFilm;
+    private FloatingActionButton mFab;
     private Picasso mPicasso;
 
+    // TODO pass via argument passing
+    private boolean mFavorite;
+
     private BroadcastReceiver mBroadcastReceiver;
+    private FilmManager mFilmManager;
 
     @Nullable
     @Override
@@ -61,6 +68,7 @@ public class FilmDetailFragment extends Fragment {
         mPoster = (ImageView) view.findViewById(R.id.ivwPoster);
         mOverview = (TextView) view.findViewById(R.id.tvwOverview);
         mCast = (TableLayout) view.findViewById(R.id.tltCast);
+        mFab = (FloatingActionButton) view.findViewById(R.id.fab);
         mPicasso = Picasso.with(getActivity());
 
         if (BuildConfig.DEBUG) {
@@ -73,6 +81,8 @@ public class FilmDetailFragment extends Fragment {
                 processFilmDetails(inflater);
             }
         };
+
+        mFilmManager = new FilmManager(getActivity());
 
         return view;
     }
@@ -95,7 +105,7 @@ public class FilmDetailFragment extends Fragment {
      *
      * @param film film to be set
      */
-    public void setFilm(Film film) {
+    public void setFilm(final Film film) {
         L.d(TAG, "setFilm() called, film: " + film);
 
         if (null != film) {
@@ -103,7 +113,22 @@ public class FilmDetailFragment extends Fragment {
             mTitle.setText(mFilm.getTitle());
             mRoot.setVisibility(null != mFilm ? View.VISIBLE : View.INVISIBLE);
             mOverview.setText(mFilm.getOverview());
-            mYear.setText(String.valueOf(mFilm.getReleaseYear()));
+            mYear.setText(String.valueOf(mFilm.getReleaseDate()));
+
+            mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!mFavorite) {
+                        mFavorite = true;
+                        mFab.setImageResource(R.drawable.ic_action_minus);
+                        mFilmManager.add(mFilm);
+                    } else {
+                        mFavorite = false;
+                        mFab.setImageResource(R.drawable.ic_action_add);
+                        mFilmManager.delete(mFilm);
+                    }
+                }
+            });
 
             mPicasso.load(TheMovieDB.API_IMAGES_BASE_URL + film.getPosterPath())
                     .fit()
