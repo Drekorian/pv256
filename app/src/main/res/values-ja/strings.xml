@@ -30,4 +30,6 @@
     <string name="sync_account_type">Movio (テストアカウント)</string>
     <string name="force_sync">力の同期</string>
     <string name="fake_data_updates">偽のデータ更新</string>
+    <string name="new_info_found">私はあなたの好きな映画についての新しい情報を見つけました。</string>
+    <string name="synchronization_complete">同期完了！</string>
 </resources>

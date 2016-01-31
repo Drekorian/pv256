@@ -30,4 +30,6 @@
     <string name="sync_account_type">Movio (Testovací účet)</string>
     <string name="fake_data_updates">Falšovat updaty</string>
     <string name="force_sync">Vynutit synchronizaci</string>
+    <string name="synchronization_complete">Synchronizace hotova!</string>
+    <string name="new_info_found">Našel jsem novinky o tvých filmech.</string>
 </resources>
