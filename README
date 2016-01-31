@@ -75,3 +75,11 @@ PV256 Android programming project
 - implements Loader
 - adds Spinner to switch between new films and favorites in the DB
 - adds simple DB test
+
+===============================================================================
+==   Week 10   ================================================================
+===============================================================================
+
+- adds sync adapter
+- adds fake update sync
+- add user notification upon update
