@@ -26,4 +26,8 @@
     <string name="parse_error_text">Nastala chyba při parsování dat z MovieDB API</string>
     <string name="section_favorites">Oblíbené</string>
     <string name="section_discover">Novinky</string>
+    <string name="sync_account_name">Uživatel Movio</string>
+    <string name="sync_account_type">Movio (Testovací účet)</string>
+    <string name="fake_data_updates">Falšovat updaty</string>
+    <string name="force_sync">Vynutit synchronizaci</string>
 </resources>

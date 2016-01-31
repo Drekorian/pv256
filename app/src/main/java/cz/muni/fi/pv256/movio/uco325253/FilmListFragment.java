@@ -25,6 +25,7 @@ import java.util.List;
 
 import cz.muni.fi.pv256.movio.uco325253.db.FilmLoader;
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
+import cz.muni.fi.pv256.movio.uco325253.sync.UpdaterSyncAdapter;
 
 /**
  * This fragment displays a list of films.
@@ -102,11 +103,21 @@ public class FilmListFragment extends Fragment implements LoaderManager.LoaderCa
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                mGvwMovies.setAdapter(new FilmAdapter(getActivity(), DataLoader.getInstance().getFilms(), R.layout.list_item_film_header, R.layout.item_film));
+                switch (intent.getAction()) {
+
+                    case LoadService.INTENT_ACTION_LIST:
+                        mGvwMovies.setAdapter(new FilmAdapter(getActivity(), DataLoader.getInstance().getFilms(), R.layout.list_item_film_header, R.layout.item_film));
+                        break;
+
+                    case UpdaterSyncAdapter.INTENT_ACTION_RESTART_LOADER:
+                        getLoaderManager().restartLoader(0, null, FilmListFragment.this);
+                        break;
+                }
             }
         };
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mBroadcastReceiver, new IntentFilter(LoadService.INTENT_ACTION_LIST));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mBroadcastReceiver, new IntentFilter(UpdaterSyncAdapter.INTENT_ACTION_RESTART_LOADER));
     }
 
     @Override
@@ -119,6 +130,8 @@ public class FilmListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onResume() {
         super.onResume();
+
+        mFavoritesRequested = ((MainActivity) getActivity()).isFavouritesRequested();
 
         if (getLoaderManager().getLoader(0) == null) {
             getLoaderManager().initLoader(0, null, this);
@@ -185,6 +198,10 @@ public class FilmListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader<List<Film>> loader) {
         L.d(TAG, "onLoaderReset() called");
+
+        if (mFavoritesRequested) {
+            publishFavorites();
+        }
     }
 
 }

@@ -1,8 +1,10 @@
 package cz.muni.fi.pv256.movio.uco325253;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -13,13 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
+import cz.muni.fi.pv256.movio.uco325253.sync.UpdaterSyncAdapter;
 
 
 /**
@@ -42,7 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     @SuppressWarnings("FieldCanBeLocal")
-    private ListView mLeftDrawer;
+    private CheckBox mFakeData;
+    @SuppressWarnings("FieldCanBeLocal")
+    private Button mForceSync;
+    @SuppressWarnings("FieldCanBeLocal")
+    private SharedPreferences mSharedPreferences;
 
     private WeakReference<FilmListFragment> mFilmListFragment;
     private WeakReference<FilmDetailFragment> mFilmDetailFragment;
@@ -52,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         L.d(TAG, "onCreate() called, savedInstanceState: " + savedInstanceState);
 
         super.onCreate(savedInstanceState);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // app loading
+        UpdaterSyncAdapter.initializeSyncAdapter(this);
+        UpdaterSyncAdapter.syncImmediately(this);
+
         setContentView(R.layout.activity_main);
 
         mTablet = getResources().getBoolean(R.bool.tablet);
@@ -88,7 +103,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mLeftDrawer = (ListView) findViewById(R.id.left_drawer);
+        mFakeData = (CheckBox) findViewById(R.id.chbFakeData);
+        mForceSync = (Button) findViewById(R.id.btnForceSync);
+
+        mFakeData.setChecked(mSharedPreferences.getBoolean(TheMovieDB.SHARED_PREFERENCES_KEY_FAKE_DATA, false));
+        mFakeData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mSharedPreferences.edit()
+                        .putBoolean(TheMovieDB.SHARED_PREFERENCES_KEY_FAKE_DATA, isChecked)
+                        .apply();
+            }
+
+        });
+
+        mForceSync.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                UpdaterSyncAdapter.syncImmediately(MainActivity.this);
+            }
+
+        });
 
         setSupportActionBar(mToolbar);
 
@@ -104,13 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        mLeftDrawer.setAdapter(new ArrayAdapter<>(this, R.layout.list_item_menu, R.id.tvwName, new ArrayList<String>() {{
-            add("Akční");
-            add("Detektivní");
-            add("Horror");
-            add("Sci-fi");
-        }}));
     }
 
     @Override
@@ -181,6 +211,15 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(FilmDetailActivity.EXTRA_KEY_FILM, film);
             startActivity(intent);
         }
+    }
+
+    /**
+     * Returns whether the favorites option is selected.
+     *
+     * @return true, provided that the favorites option is selected
+     */
+    public boolean isFavouritesRequested() {
+        return 1 == mSelection.getSelectedItemPosition();
     }
 
 }

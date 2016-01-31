@@ -38,14 +38,27 @@ public interface TheMovieDBAPI {
     );
 
     /**
-     * Loads the film details for given film.
+     * Loads the cast details for given film.
+     *
+     * @param id     unique film ID
+     * @param apiKey The Movie DB API key
+     * @return cast details for given film
+     */
+    @GET("/3/movie/{id}/credits")
+    Call<CastWrapper> loadCastAndCrew(
+            @Path(PATH_PARAM_ID) long id,
+            @Query(QUERY_PARAM_API_KEY) String apiKey
+    );
+
+    /**
+     * Loads the film details for given movie.
      *
      * @param id     unique film ID
      * @param apiKey The Movie DB API key
      * @return details for given film
      */
-    @GET("/3/movie/{id}/credits")
-    Call<CastWrapper> loadCastAndCrew(
+    @GET("/3/movie/{id}")
+    Call<Film> loadMovieDetails(
             @Path(PATH_PARAM_ID) long id,
             @Query(QUERY_PARAM_API_KEY) String apiKey
     );

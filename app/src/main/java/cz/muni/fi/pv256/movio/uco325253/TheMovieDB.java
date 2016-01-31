@@ -28,6 +28,11 @@ public class TheMovieDB {
     public static final String API_KEY = "9b423b1fe1dca6655d13348684dce5d4";
 
     /**
+     * Shared preferences key to store the fake data flag.
+     */
+    public static final String SHARED_PREFERENCES_KEY_FAKE_DATA = "fake_data";
+
+    /**
      * Default constructor. Private in order to ensure the static usage.
      */
     private TheMovieDB() {

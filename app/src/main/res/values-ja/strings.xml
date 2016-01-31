@@ -26,4 +26,8 @@
     <string name="parse_error_text">MovieDB APIを構文解析エラー</string>
     <string name="section_favorites">お気に入り</string>
     <string name="section_discover">発見</string>
+    <string name="sync_account_name">Movio ユーザー</string>
+    <string name="sync_account_type">Movio (テストアカウント)</string>
+    <string name="force_sync">力の同期</string>
+    <string name="fake_data_updates">偽のデータ更新</string>
 </resources>

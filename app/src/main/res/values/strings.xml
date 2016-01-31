@@ -27,4 +27,15 @@
 
     <string name="section_favorites">Favorites</string>
     <string name="section_discover">Discover</string>
+
+    <string name="content_authority" translatable="false">cz.muni.fi.pv256.movio.uco325253</string>
+    <string name="sync_account_name">Movio User</string>
+    <string name="sync_account_type">Movio (Test Account)</string>
+
+    <string name="fake_data_updates">Fake data updates</string>
+    <string name="force_sync">Force sync</string>
+
+    <string name="synchronization_complete">Synchronization complete!</string>
+    <string name="new_info_found">I\'ve found new info about your favorite movies.</string>
+
 </resources>

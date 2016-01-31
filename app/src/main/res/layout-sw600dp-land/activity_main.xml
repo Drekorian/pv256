@@ -56,13 +56,31 @@
 
         </LinearLayout>
 
-        <ListView
+        <LinearLayout
             android:id="@+id/left_drawer"
             android:layout_width="@dimen/left_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/primary_dark"
-            android:dividerHeight="@dimen/divider_height"/>
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/chbFakeData"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:gravity="end|center_vertical"
+                android:text="@string/fake_data_updates"/>
+
+            <Button
+                android:id="@+id/btnForceSync"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:gravity="end|center_vertical"
+                android:text="@string/force_sync"/>
+
+        </LinearLayout>
 
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

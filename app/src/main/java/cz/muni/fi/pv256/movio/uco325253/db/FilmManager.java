@@ -60,35 +60,47 @@ public class FilmManager {
     public List<Film> getAll() {
         Cursor cursor = mContext.getContentResolver().query(FilmEntry.CONTENT_URI, FILM_COLUMNS, null, null, null);
 
-        if (null != cursor && cursor.moveToFirst()) {
-            List<Film> films = new ArrayList<>(cursor.getCount());
-            try {
+        if (null != cursor) {
+            List<Film> films = null;
+
+            if (cursor.moveToFirst()) {
+                films = new ArrayList<>(cursor.getCount());
+
                 while (!cursor.isAfterLast()) {
                     films.add(getFilm(cursor));
                     cursor.moveToNext();
                 }
-            } finally {
-                cursor.close();
             }
 
-            return films;
+            cursor.close();
+            if (null != films) {
+                return films;
+            }
         }
 
         // default result is empty collection
         return Collections.emptyList();
     }
 
+    /**
+     * Finds a film in the database.
+     *
+     * @param id unique ID to search the film by
+     * @return film with the given ID, provided such is stored, null otherwise
+     */
     public Film find(long id) {
         Cursor cursor = mContext.getContentResolver().query(FilmEntry.CONTENT_URI, FILM_COLUMNS, WHERE_ID, new String[]{String.valueOf(id)}, null);
 
-        if (null != cursor && cursor.moveToFirst()) {
-            try {
+        if (null != cursor) {
+            Film film = null;
+            if (cursor.moveToFirst()) {
                 if (1 == cursor.getCount()) {
-                    return getFilm(cursor);
+                    film = getFilm(cursor);
                 }
-            } finally {
-                cursor.close();
             }
+
+            cursor.close();
+            return film;
         }
 
         // default result null

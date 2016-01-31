@@ -243,6 +243,7 @@ public class LoadService extends IntentService {
         switch (action) {
             case EXTRAS_VALUE_LIST:
                 mRetrofit = new Retrofit.Builder()
+                        .client(okHttpClient)
                         .baseUrl(TheMovieDB.API_BASE_URL)
                         .addConverterFactory(new Converter.Factory() {
                             @Override
@@ -265,6 +266,7 @@ public class LoadService extends IntentService {
 
             case EXTRAS_VALUE_DETAILS:
                 mRetrofit = new Retrofit.Builder()
+                        .client(okHttpClient)
                         .baseUrl(TheMovieDB.API_BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
