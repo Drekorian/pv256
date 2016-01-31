@@ -5,10 +5,12 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import cz.muni.fi.pv256.movio.uco325253.L;
 
@@ -68,8 +70,10 @@ public final class Film implements Parcelable {
         this.id = id;
     }
 
-    public Integer getReleaseYear() {
-        L.d(TAG, "getReleaseYear()");
+    public String getReleaseDate() {
+        L.d(TAG, "getReleaseDate()");
+
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
 
         if (null == mReleaseDate) {
             return null;
@@ -79,7 +83,7 @@ public final class Film implements Parcelable {
 
         try {
             calendar.setTimeInMillis(DATE_FORMAT.parse(mReleaseDate).getTime());
-            return calendar.get(Calendar.YEAR);
+            return dateFormat.format(calendar.getTime());
         } catch (ParseException ex) {
             L.e(TAG, "Unable to parse release date: " + mReleaseDate);
         }
@@ -106,6 +110,15 @@ public final class Film implements Parcelable {
     public String getTitle() {
         L.d(TAG, "getTitle() called");
         return mTitle;
+    }
+
+    /**
+     * Sets film title.
+     *
+     * @param title film title to be set
+     */
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     /**
@@ -143,6 +156,8 @@ public final class Film implements Parcelable {
      *
      * @param overview film overview to be set
      */
+    // TODO: remove if unused
+    @SuppressWarnings("unused")
     public void setOverview(String overview) {
         L.d(TAG, "setOverview() called, overview: " + overview);
         mOverview = overview;
