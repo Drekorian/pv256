@@ -47,7 +47,6 @@ public class FilmDetailFragment extends Fragment {
     private FloatingActionButton mFab;
     private Picasso mPicasso;
 
-    // TODO pass via argument passing
     private boolean mFavorite;
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -70,6 +69,8 @@ public class FilmDetailFragment extends Fragment {
         mCast = (TableLayout) view.findViewById(R.id.tltCast);
         mFab = (FloatingActionButton) view.findViewById(R.id.fab);
         mPicasso = Picasso.with(getActivity());
+
+        mFab.setEnabled(false);
 
         if (BuildConfig.DEBUG) {
             mPicasso.setIndicatorsEnabled(true);
@@ -114,6 +115,16 @@ public class FilmDetailFragment extends Fragment {
             mRoot.setVisibility(null != mFilm ? View.VISIBLE : View.INVISIBLE);
             mOverview.setText(mFilm.getOverview());
             mYear.setText(String.valueOf(mFilm.formatReleaseDate()));
+
+            mFavorite = null != mFilmManager.find(film.getId());
+
+            if (mFavorite) {
+                mFab.setImageResource(R.drawable.ic_action_minus);
+            } else {
+                mFab.setImageResource(R.drawable.ic_action_add);
+            }
+
+            mFab.setEnabled(true);
 
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override

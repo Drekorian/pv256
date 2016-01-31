@@ -78,6 +78,23 @@ public class FilmManager {
         return Collections.emptyList();
     }
 
+    public Film find(long id) {
+        Cursor cursor = mContext.getContentResolver().query(FilmEntry.CONTENT_URI, FILM_COLUMNS, WHERE_ID, new String[]{String.valueOf(id)}, null);
+
+        if (null != cursor && cursor.moveToFirst()) {
+            try {
+                if (1 == cursor.getCount()) {
+                    return getFilm(cursor);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        // default result null
+        return null;
+    }
+
     /**
      * Inserts a film into the database.
      *

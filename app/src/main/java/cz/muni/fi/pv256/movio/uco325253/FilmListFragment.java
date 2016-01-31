@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,9 @@ import android.widget.TextView;
 
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
+import java.util.List;
+
+import cz.muni.fi.pv256.movio.uco325253.db.FilmLoader;
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
 
 /**
@@ -26,7 +31,7 @@ import cz.muni.fi.pv256.movio.uco325253.model.Film;
  * <p/>
  * Created by xosvald on 25.10.2015.
  */
-public class FilmListFragment extends Fragment {
+public class FilmListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Film>> {
 
     private static final String TAG = FilmListFragment.class.getSimpleName();
 
@@ -38,6 +43,9 @@ public class FilmListFragment extends Fragment {
     private TextView mTvwEmpty;
     @SuppressWarnings("FieldCanBeLocal")
     private BroadcastReceiver mBroadcastReceiver;
+
+    private List<Film> mFavorites = null;
+    private boolean mFavoritesRequested = false;
 
     @Nullable
     @Override
@@ -106,7 +114,35 @@ public class FilmListFragment extends Fragment {
         L.d(TAG, "onStart() called");
 
         super.onStart();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getLoaderManager().getLoader(0) == null) {
+            getLoaderManager().initLoader(0, null, this);
+        } else {
+            getLoaderManager().restartLoader(0, null, this);
+        }
+    }
+
+    /**
+     * Either marks the favorites as being loaded or publishes them to the UI.
+     */
+    public void loadFavoriteFilms() {
+        if (null == mFavorites) {
+            mFavoritesRequested = true;
+        } else {
+            publishFavorites();
+        }
+    }
+
+    /**
+     * Loads Discover films into the UI.
+     */
+    public void loadDiscoverFilms() {
+        mFavoritesRequested = false;
         if (DataLoader.getInstance().hasData()) {
             mGvwMovies.setAdapter(new FilmAdapter(getActivity(), DataLoader.getInstance().getFilms(), R.layout.list_item_film_header, R.layout.item_film));
         } else {
@@ -114,6 +150,10 @@ public class FilmListFragment extends Fragment {
             intent.putExtra(LoadService.EXTRAS_KEY_LOAD, LoadService.EXTRAS_VALUE_LIST);
             getActivity().startService(intent);
         }
+    }
+
+    private void publishFavorites() {
+        mGvwMovies.setAdapter(new FilmAdapter(getActivity(), mFavorites, R.layout.list_item_film_header, R.layout.item_film));
     }
 
     private MainActivity getMainActivity() {
@@ -124,6 +164,27 @@ public class FilmListFragment extends Fragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public Loader<List<Film>> onCreateLoader(int id, Bundle args) {
+        L.d(TAG, "onCreateLoader() called");
+        return new FilmLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Film>> loader, List<Film> data) {
+        L.d(TAG, "onLoadFinished() called");
+        mFavorites = data;
+
+        if (mFavoritesRequested) {
+            publishFavorites();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Film>> loader) {
+        L.d(TAG, "onLoaderReset() called");
     }
 
 }

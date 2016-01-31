@@ -30,7 +30,7 @@ import cz.muni.fi.pv256.movio.uco325253.model.Film;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int POSITION_UPCOMING_MOVIES = 0;
+    private static final int POSITION_DISCOVER = 0;
     private static final int POSITION_FAVORITES = 1;
 
     private boolean mTablet;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 final FilmListFragment filmListFragment = mFilmListFragment.get();
 
                 switch (position) {
-                    case POSITION_UPCOMING_MOVIES:
+                    case POSITION_DISCOVER:
                         filmListFragment.loadDiscoverFilms();
                         break;
 
