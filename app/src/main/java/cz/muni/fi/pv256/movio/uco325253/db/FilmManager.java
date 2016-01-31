@@ -22,10 +22,18 @@ public class FilmManager {
 
     public static final int COLUMN_FILM_ID = 0;
     public static final int COLUMN_FILM_TITLE = 1;
+    public static final int COLUMN_FILM_OVERVIEW = 2;
+    public static final int COLUMN_FILM_RELEASE_DATE = 3;
+    public static final int COLUMN_FILM_POSTER_PATH = 4;
+    public static final int COLUMN_FILM_BACKDROP_PATH = 5;
 
     private static final String[] FILM_COLUMNS = {
             FilmEntry._ID,
             FilmEntry.COLUMN_TITLE,
+            FilmEntry.COLUMN_OVERVIEW,
+            FilmEntry.COLUMN_RELEASE_DATE,
+            FilmEntry.COLUMN_POSTER_PATH,
+            FilmEntry.COLUMN_BACKDROP_PATH
     };
 
     /**
@@ -92,7 +100,6 @@ public class FilmManager {
      *
      * @param film film to update in the database
      */
-    // TODO: remove me
     @SuppressWarnings("unused")
     public void update(Film film) {
         if (null == film) {
@@ -129,6 +136,10 @@ public class FilmManager {
         ContentValues values = new ContentValues();
         values.put(FilmEntry._ID, film.getId());
         values.put(FilmEntry.COLUMN_TITLE, film.getTitle());
+        values.put(FilmEntry.COLUMN_OVERVIEW, film.getOverview());
+        values.put(FilmEntry.COLUMN_RELEASE_DATE, film.getReleaseDate());
+        values.put(FilmEntry.COLUMN_POSTER_PATH, film.getPosterPath());
+        values.put(FilmEntry.COLUMN_BACKDROP_PATH, film.getBackdropPath());
         return values;
     }
 
@@ -142,6 +153,10 @@ public class FilmManager {
         Film film = new Film();
         film.setId(cursor.getLong(COLUMN_FILM_ID));
         film.setTitle(cursor.getString(COLUMN_FILM_TITLE));
+        film.setOverview(cursor.getString(COLUMN_FILM_OVERVIEW));
+        film.setReleaseDate(cursor.getString(COLUMN_FILM_RELEASE_DATE));
+        film.setPosterPath(cursor.getString(COLUMN_FILM_POSTER_PATH));
+        film.setBackdropPath(cursor.getString(COLUMN_FILM_BACKDROP_PATH));
         film.setSection(mContext.getString(R.string.section_favorites));
         return film;
     }

@@ -51,6 +51,22 @@ public class FilmContract {
          * Column name for the film title
          */
         public static final String COLUMN_TITLE = "title";
+        /**
+         * Column name for the film overview
+         */
+        public static final String COLUMN_OVERVIEW = "overview";
+        /**
+         * Column name for the film year
+         */
+        public static final String COLUMN_RELEASE_DATE = "release_date";
+        /**
+         * Column name for the film poster path
+         */
+        public static final String COLUMN_POSTER_PATH = "poster_path";
+        /**
+         * Column name for the film backdrop path
+         */
+        public static final String COLUMN_BACKDROP_PATH = "backdrop_path";
 
         /**
          * Returns a URI for film with given unique ID.

@@ -113,7 +113,7 @@ public class FilmDetailFragment extends Fragment {
             mTitle.setText(mFilm.getTitle());
             mRoot.setVisibility(null != mFilm ? View.VISIBLE : View.INVISIBLE);
             mOverview.setText(mFilm.getOverview());
-            mYear.setText(String.valueOf(mFilm.getReleaseDate()));
+            mYear.setText(String.valueOf(mFilm.formatReleaseDate()));
 
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override

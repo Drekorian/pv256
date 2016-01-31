@@ -24,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Parametric constructor. Initializes the helper with given Android context.
+     *
      * @param context Android context to initialize the helper with
      */
     public DBHelper(Context context) {
@@ -43,9 +44,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createTableMovies(SQLiteDatabase db) {
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + FilmContract.FilmEntry.TABLE_NAME + " (" +
                 FilmContract.FilmEntry._ID + " INTEGER PRIMARY KEY," +
-                FilmContract.FilmEntry.COLUMN_TITLE + " TEXT NOT NULL" +
-                // TODO: remove me
-                //"UNIQUE (" + FilmContract.FilmEntry.COLUMN_START_DATE_TEXT + ", " + FilmContract.FilmEntry.COLUMN_END_DATE_TEXT + ") ON CONFLICT REPLACE" +
+                FilmContract.FilmEntry.COLUMN_TITLE + " TEXT NOT NULL," +
+                FilmContract.FilmEntry.COLUMN_OVERVIEW + " TEXT," +
+                FilmContract.FilmEntry.COLUMN_RELEASE_DATE + " TEXT," +
+                FilmContract.FilmEntry.COLUMN_POSTER_PATH + " TEXT," +
+                FilmContract.FilmEntry.COLUMN_BACKDROP_PATH + " TEXT" +
                 " );";
 
         db.execSQL(SQL_CREATE_LOCATION_TABLE);

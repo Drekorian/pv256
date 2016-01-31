@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import cz.muni.fi.pv256.movio.uco325253.L;
 
@@ -55,23 +54,70 @@ public final class Film implements Parcelable {
     public Film() {
     }
 
+    /**
+     * Returns the film backdrop path.
+     *
+     * @return film backdrop path
+     */
     public String getBackdropPath() {
         L.d(TAG, "getBackdropPath() called");
         return mBackdropPath;
     }
 
+    /**
+     * Sets film backdrop path.
+     *
+     * @param backdropPath backdrop path to be set
+     */
+    public void setBackdropPath(String backdropPath) {
+        mBackdropPath = backdropPath;
+    }
+
+    /**
+     * Returns a unique film ID.
+     *
+     * @return a unique film ID
+     */
     public long getId() {
         L.d(TAG, "getId() called");
         return id;
     }
 
+    /**
+     * Sets film unique ID.
+     *
+     * @param id unique ID to be set
+     */
     public void setId(long id) {
         L.d(TAG, "setId() called, id: " + id);
         this.id = id;
     }
 
+    /**
+     * Returns the film release date.
+     *
+     * @return film release date
+     */
     public String getReleaseDate() {
-        L.d(TAG, "getReleaseDate()");
+        return mReleaseDate;
+    }
+
+    /**
+     * Sets film release date.
+     *
+     * @param releaseDate release date to be set
+     */
+    public void setReleaseDate(String releaseDate) {
+        mReleaseDate = releaseDate;
+    }
+
+    /**
+     * Returns the film release date.
+     *
+     * @return film release date
+     */
+    public String formatReleaseDate() {
+        L.d(TAG, "formatReleaseDate()");
 
         // replace default short pattern with full year pattern
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
@@ -99,10 +145,18 @@ public final class Film implements Parcelable {
      *
      * @return film cover path
      */
-    @SuppressWarnings("unused")
     public String getPosterPath() {
         L.d(TAG, "getPosterPath()");
         return mPosterPath;
+    }
+
+    /**
+     * Sets film poster path.
+     *
+     * @param posterPath poster path to be set
+     */
+    public void setPosterPath(String posterPath) {
+        mPosterPath = posterPath;
     }
 
     /**
@@ -159,11 +213,25 @@ public final class Film implements Parcelable {
      *
      * @param overview film overview to be set
      */
-    // TODO: remove if unused
-    @SuppressWarnings("unused")
     public void setOverview(String overview) {
         L.d(TAG, "setOverview() called, overview: " + overview);
         mOverview = overview;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (null == o || !(o instanceof Film)) {
+            return false;
+        }
+
+        Film other = (Film) o;
+        return id == other.id &&
+                mTitle.equals(other.mTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) id + 101 * mTitle.hashCode();
     }
 
     /*
@@ -184,25 +252,6 @@ public final class Film implements Parcelable {
         dest.writeString(this.mPosterPath);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSection);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        // TODO: extend whenever you decide to upgrade the DB schema
-        if (null == o || !(o instanceof Film)) {
-            return false;
-        }
-
-        Film other = (Film) o;
-        return id == other.id &&
-               mTitle.equals(other.mTitle);
-    }
-
-    @Override
-    public int hashCode() {
-        // TODO: extend whenever you decide to upgrade the DB schema
-        return (int) id +
-               (101 * mTitle.hashCode());
     }
 
     protected Film(Parcel in) {
