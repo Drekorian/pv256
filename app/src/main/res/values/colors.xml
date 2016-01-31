@@ -5,6 +5,7 @@
     <color name="primary_dark">#232b5b</color>
     <color name="primary_light">#c5cae9</color>
     <color name="accent">#cfc060</color>
+    <color name="toolbar_text_color">#ffffff</color>
 
     <color name="secondary_primary">#f44336</color>
     <color name="secondary_primary_dark">#d32f2f</color>

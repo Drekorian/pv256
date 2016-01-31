@@ -25,4 +25,5 @@
     <string name="parse_error_title">おっと…何かが間違っていました</string>
     <string name="parse_error_text">MovieDB APIを構文解析エラー</string>
     <string name="section_favorites">お気に入り</string>
+    <string name="section_discover">発見</string>
 </resources>

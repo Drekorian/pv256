@@ -26,4 +26,5 @@
     <string name="parse_error_text">Error parsing The MovieDB API</string>
 
     <string name="section_favorites">Favorites</string>
+    <string name="section_discover">Discover</string>
 </resources>

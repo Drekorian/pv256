@@ -10,13 +10,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import cz.muni.fi.pv256.movio.uco325253.model.Film;
+
 
 /**
  * This class serves as the app's main activity.
@@ -26,16 +30,21 @@ import cz.muni.fi.pv256.movio.uco325253.model.Film;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int POSITION_UPCOMING_MOVIES = 0;
+    private static final int POSITION_FAVORITES = 1;
 
     private boolean mTablet;
     @SuppressWarnings("FieldCanBeLocal")
     private Toolbar mToolbar;
+    @SuppressWarnings("FieldCanBeLocal")
+    private Spinner mSelection;
     @SuppressWarnings("FieldCanBeLocal")
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     @SuppressWarnings("FieldCanBeLocal")
     private ListView mLeftDrawer;
 
+    private WeakReference<FilmListFragment> mFilmListFragment;
     private WeakReference<FilmDetailFragment> mFilmDetailFragment;
 
     @Override
@@ -47,17 +56,50 @@ public class MainActivity extends AppCompatActivity {
 
         mTablet = getResources().getBoolean(R.bool.tablet);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mSelection = (Spinner) findViewById(R.id.sprSelection);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_toolbar, new String[]{getString(R.string.section_discover), getString(R.string.section_favorites)});
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_toolbar);
+
+        mSelection.setAdapter(adapter);
+        mSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final FilmListFragment filmListFragment = mFilmListFragment.get();
+
+                switch (position) {
+                    case POSITION_UPCOMING_MOVIES:
+                        filmListFragment.loadDiscoverFilms();
+                        break;
+
+                    case POSITION_FAVORITES:
+                        filmListFragment.loadFavoriteFilms();
+                        break;
+
+                    default:
+                        throw new IllegalStateException(String.format("Unknown state: %s", position));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+
+        });
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftDrawer = (ListView) findViewById(R.id.left_drawer);
 
         setSupportActionBar(mToolbar);
 
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
 
         if (null != actionBar) {
+            actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
+        } else {
+            L.e(TAG, "ActionBar is null! This should never happen.");
         }
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
@@ -97,6 +139,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onAttachFragment(fragment);
 
+        // store a reference to the list fragment
+        if (fragment instanceof FilmListFragment) {
+            mFilmListFragment = new WeakReference<>((FilmListFragment) fragment);
+        }
+
+        // store a reference to the detail fragment
         if (fragment instanceof FilmDetailFragment) {
             mFilmDetailFragment = new WeakReference<>((FilmDetailFragment) fragment);
         }
