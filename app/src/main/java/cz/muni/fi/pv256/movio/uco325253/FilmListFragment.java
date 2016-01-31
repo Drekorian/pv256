@@ -1,5 +1,6 @@
 package cz.muni.fi.pv256.movio.uco325253;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,7 @@ public class FilmListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private List<Film> mFavorites = null;
     private boolean mFavoritesRequested = false;
+    private boolean mPostponedRestart = false;
 
     @Nullable
     @Override
@@ -110,7 +112,11 @@ public class FilmListFragment extends Fragment implements LoaderManager.LoaderCa
                         break;
 
                     case UpdaterSyncAdapter.INTENT_ACTION_RESTART_LOADER:
-                        getLoaderManager().restartLoader(0, null, FilmListFragment.this);
+                        if (isAdded()) {
+                            getLoaderManager().restartLoader(0, null, FilmListFragment.this);
+                        } else {
+                            mPostponedRestart = true;
+                        }
                         break;
                 }
             }
@@ -137,6 +143,16 @@ public class FilmListFragment extends Fragment implements LoaderManager.LoaderCa
             getLoaderManager().initLoader(0, null, this);
         } else {
             getLoaderManager().restartLoader(0, null, this);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (mPostponedRestart) {
+            mPostponedRestart = false;
+            getLoaderManager().restartLoader(0, null, FilmListFragment.this);
         }
     }
 
