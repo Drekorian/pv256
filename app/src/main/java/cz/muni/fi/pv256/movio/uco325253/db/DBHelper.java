@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Internal storage DB file name
      */
-    public static final String DATABASE_NAME = "movies.db";
+    public static final String DATABASE_NAME = "films.db";
 
     /**
      * Database schema version
@@ -41,11 +41,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void createTableMovies(SQLiteDatabase db) {
-        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + MovieContract.MovieEntry.TABLE_NAME + " (" +
-                MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY," +
-                MovieContract.MovieEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + FilmContract.FilmEntry.TABLE_NAME + " (" +
+                FilmContract.FilmEntry._ID + " INTEGER PRIMARY KEY," +
+                FilmContract.FilmEntry.COLUMN_TITLE + " TEXT NOT NULL" +
                 // TODO: remove me
-                //"UNIQUE (" + MovieContract.MovieEntry.COLUMN_START_DATE_TEXT + ", " + MovieContract.MovieEntry.COLUMN_END_DATE_TEXT + ") ON CONFLICT REPLACE" +
+                //"UNIQUE (" + FilmContract.FilmEntry.COLUMN_START_DATE_TEXT + ", " + FilmContract.FilmEntry.COLUMN_END_DATE_TEXT + ") ON CONFLICT REPLACE" +
                 " );";
 
         db.execSQL(SQL_CREATE_LOCATION_TABLE);

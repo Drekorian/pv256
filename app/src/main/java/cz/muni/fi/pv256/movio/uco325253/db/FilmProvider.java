@@ -17,16 +17,16 @@ import java.util.Arrays;
 import cz.muni.fi.pv256.movio.uco325253.L;
 
 /**
- * This class serves as the content provider for the movie entity.
+ * This class serves as the content provider for the film entity.
  * <p/>
  * Created by xosvald on 02.12.2015.
  */
-public class MovieProvider extends ContentProvider {
+public class FilmProvider extends ContentProvider {
 
-    private static final String TAG = MovieProvider.class.getSimpleName();
+    private static final String TAG = FilmProvider.class.getSimpleName();
 
-    private static final int MOVIE = 100;
-    private static final int MOVIE_ID = 101;
+    private static final int FILM = 100;
+    private static final int FILM_ID = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -34,10 +34,10 @@ public class MovieProvider extends ContentProvider {
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = MovieContract.CONTENT_AUTHORITY;
+        final String authority = FilmContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, MovieContract.PATH_WORK_TIME, MOVIE);
-        matcher.addURI(authority, MovieContract.PATH_WORK_TIME + "/#", MOVIE_ID);
+        matcher.addURI(authority, FilmContract.PATH_FILM, FILM);
+        matcher.addURI(authority, FilmContract.PATH_FILM + "/#", FILM_ID);
 
         return matcher;
     }
@@ -55,12 +55,12 @@ public class MovieProvider extends ContentProvider {
 
         Cursor cursor;
         switch (sUriMatcher.match(uri)) {
-            // single movie
-            case MOVIE_ID: {
+            // single film
+            case FILM_ID: {
                 cursor = mDBHelper.getReadableDatabase().query(
-                        MovieContract.MovieEntry.TABLE_NAME, // table
+                        FilmContract.FilmEntry.TABLE_NAME, // table
                         projection, // projection (columns)
-                        MovieContract.MovieEntry._ID + " = '" + ContentUris.parseId(uri) + "'", // selection (where)
+                        FilmContract.FilmEntry._ID + " = '" + ContentUris.parseId(uri) + "'", // selection (where)
                         null,      // selection arguments
                         null,      // group by
                         null,      // having
@@ -68,9 +68,11 @@ public class MovieProvider extends ContentProvider {
                 );
                 break;
             }
-            case MOVIE: {
+
+            // a collection of films
+            case FILM: {
                 cursor = mDBHelper.getReadableDatabase().query(
-                        MovieContract.MovieEntry.TABLE_NAME, // table
+                        FilmContract.FilmEntry.TABLE_NAME, // table
                         projection,    // projection (columns)
                         selection,     // selection (where)
                         selectionArgs, // selection arguments
@@ -105,11 +107,11 @@ public class MovieProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
-            case MOVIE:
-                return MovieContract.MovieEntry.CONTENT_TYPE;
+            case FILM:
+                return FilmContract.FilmEntry.CONTENT_TYPE;
 
-            case MOVIE_ID:
-                return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
+            case FILM_ID:
+                return FilmContract.FilmEntry.CONTENT_ITEM_TYPE;
 
             default:
                 throw new UnsupportedOperationException("Unknown URI: " + uri);
@@ -126,10 +128,10 @@ public class MovieProvider extends ContentProvider {
         Uri movieURI;
 
         switch (match) {
-            case MOVIE:
-                long id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
+            case FILM:
+                long id = db.insert(FilmContract.FilmEntry.TABLE_NAME, null, values);
                 if (0 < id)
-                    movieURI = MovieContract.MovieEntry.buildMovieUri(id);
+                    movieURI = FilmContract.FilmEntry.buildFilmUri(id);
                 else {
                     throw new android.database.SQLException(String.format("Failed to insert row into %s", uri));
                 }
@@ -154,8 +156,8 @@ public class MovieProvider extends ContentProvider {
         int rowsDeleted;
 
         switch (match) {
-            case MOVIE:
-                rowsDeleted = db.delete(MovieContract.MovieEntry.TABLE_NAME, selection, selectionArgs);
+            case FILM:
+                rowsDeleted = db.delete(FilmContract.FilmEntry.TABLE_NAME, selection, selectionArgs);
                 break;
 
             default:
@@ -180,8 +182,8 @@ public class MovieProvider extends ContentProvider {
         int rowsUpdated;
 
         switch (match) {
-            case MOVIE:
-                rowsUpdated = db.update(MovieContract.MovieEntry.TABLE_NAME, values, selection, selectionArgs);
+            case FILM:
+                rowsUpdated = db.update(FilmContract.FilmEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
 
             default:
